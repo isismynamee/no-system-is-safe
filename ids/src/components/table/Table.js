@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getData } from '../../redux/actions'
@@ -142,7 +143,7 @@ export const Table = () => {
                 "status": 1,
                 "transactionDate": "2022-08-15 13:14:52",
                 "createBy" : "abc",
-                "createOn" : "2022-07-10 13:14:52"
+                "createOn" : "2022-07-19 13:14:52"
             },
         ],
         "status" : [
@@ -156,6 +157,9 @@ export const Table = () => {
             }
         ]
     }
+    
+    const d = new Date()
+
     useEffect(() => {
         dispatch(getData(data))
     }, [])
@@ -172,7 +176,7 @@ export const Table = () => {
                 <th></th>
             </tr>
             </thead>
-            {data.data.map((item, index) => (
+            {data.data.sort((a, b) => moment(new Date(a.transactionDate)).format("DD-MM-YYYY") - moment(new Date(b.transactionDate)).format("DD-MM-YYYY")).map((item, index) => (
                 <>
                 <tbody>
                 <tr>
@@ -189,7 +193,7 @@ export const Table = () => {
                         {item.amount}
                     </td>
                     <td>
-                        {item.transactionDate}
+                        {moment(item.transactionDate).format("DD-MM-YYYY")}
                     </td>
                     <td>
                         <button onClick={() => setModalUpdate(!modalUpdate)} className="btn btn-ghost btn-xs my-2">details</button>
